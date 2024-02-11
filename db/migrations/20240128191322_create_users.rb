@@ -4,9 +4,7 @@ Sequel.migration do
   up do
     create_table :users do
       primary_key :id
-      String :username
-      String :email
-      String :password_salt
+      String :username, unique: true
       String :password_hash
     end
   end

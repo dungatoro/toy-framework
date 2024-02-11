@@ -12,8 +12,8 @@ Sequel.migration do
   up do
     create_table(:users) do
       primary_key :id
-      String :name
-      String :email
+      String :username, unique: true
+      String :password_hash
     end
   end
 
