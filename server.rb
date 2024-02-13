@@ -4,19 +4,11 @@ require 'sinatra'
 require 'sequel'
 require 'bcrypt'
 
-# Connect to SQLite database
+# local SQLite database within project directory
 DB = Sequel.sqlite('db/local.db')
 
-# Create users table if not exists
-unless DB.table_exists?(:users)
-  DB.create_table :users do
-    primary_key :id
-    String :username, unique: true
-    String :password_hash
-  end
-end
-
-# Define User model
+# base user model
+# - inherits from Sequel::Model to serialize to database
 class User < Sequel::Model
   def password=(password)
     self.password_hash = BCrypt::Password.create(password)
@@ -27,20 +19,18 @@ class User < Sequel::Model
   end
 end
 
-# Enable sessions for storing user login state
+# enable sessions to keep user logged in during their visit
+# this creates a `session` table storing currently active users
 enable :sessions
 
-# Homepage route
 get '/' do
   if session[:user_id]
-    # "Welcome, #{User[session[:user_id]].username}! <a href='/logout'>Logout</a>"
     erb :index
   else
     redirect '/login'
   end
 end
 
-# Login route
 get '/login' do
   erb :login
 end
@@ -51,17 +41,15 @@ post '/login' do
     session[:user_id] = user.id
     redirect '/'
   else
-    'Invalid username or password'
+    erb :login_err
   end
 end
 
-# Logout route
 get '/logout' do
   session.clear
   redirect '/login'
 end
 
-# Signup route
 get '/signup' do
   erb :signup
 end
@@ -72,6 +60,7 @@ post '/signup' do
     session[:user_id] = user.id
     redirect '/'
   else
-    "Error: #{user.errors.full_messages.join(', ')}"
+    # "Error: #{user.errors.full_messages.join(', ')}"
+    erb :signup_err
   end
 end
