@@ -7,8 +7,9 @@ require 'bcrypt'
 # local SQLite database within project directory
 DB = Sequel.sqlite('db/local.db')
 
-# base user model
-# - inherits from Sequel::Model to serialize to database
+# base user model inherits from Sequel::Model
+# - serialize to database
+# - creates `initialize` method automatically using database fields
 class User < Sequel::Model
   def password=(password)
     self.password_hash = BCrypt::Password.create(password)
