@@ -12,7 +12,7 @@ DB = Sequel.sqlite('db/local.db')
 # - creates `initialize` method automatically using database fields
 class User < Sequel::Model
   def password=(password)
-    self.password = BCrypt::Password.create(password)
+    self.password_hash = BCrypt::Password.create(password)
   end
 
   def authenticate(password)
@@ -25,11 +25,7 @@ end
 enable :sessions
 
 get '/' do
-  if session[:user_id]
-    erb :index
-  else
-    redirect '/login'
-  end
+  erb :index
 end
 
 get '/login' do
@@ -61,6 +57,7 @@ post '/signup' do
     session[:user_id] = user.id
     redirect '/'
   else
+    # "Error: #{user.errors.full_messages.join(', ')}"
     erb :signup_err
   end
 end
