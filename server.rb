@@ -12,7 +12,7 @@ DB = Sequel.sqlite('db/local.db')
 # - creates `initialize` method automatically using database fields
 class User < Sequel::Model
   def password=(password)
-    self.password_hash = BCrypt::Password.create(password)
+    self.password = BCrypt::Password.create(password)
   end
 
   def authenticate(password)

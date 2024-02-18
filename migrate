@@ -5,5 +5,6 @@ case $1 in
     init) sqlite3 db/local.db "VACUUM;" ;;
     # run migrations
     migrate) sqlite3 db/local.db < db/migrations.sql ;;
+esac
 
 
