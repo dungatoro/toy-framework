@@ -61,7 +61,6 @@ post '/signup' do
     session[:user_id] = user.id
     redirect '/'
   else
-    # "Error: #{user.errors.full_messages.join(', ')}"
     erb :signup_err
   end
 end
