@@ -28,12 +28,26 @@ get '/' do
   erb :index
 end
 
+get '/signup' do
+  erb :signup
+end
+
+post '/signup' do
+  user = User.new(email: params[:email], username: params[:username], password: params[:password])
+  if user.save
+    session[:user_id] = user.id
+    redirect '/'
+  else
+    erb :signup_err
+  end
+end
+
 get '/login' do
   erb :login
 end
 
 post '/login' do
-  user = User.find(username: params[:username])
+  user = User.find(email: params[:email])
   if user&.authenticate(params[:password])
     session[:user_id] = user.id
     redirect '/'
@@ -45,18 +59,4 @@ end
 get '/logout' do
   session.clear
   redirect '/login'
-end
-
-get '/signup' do
-  erb :signup
-end
-
-post '/signup' do
-  user = User.new(username: params[:username], password: params[:password])
-  if user.save
-    session[:user_id] = user.id
-    redirect '/'
-  else
-    erb :signup_err
-  end
 end

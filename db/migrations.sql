@@ -5,6 +5,7 @@ Always make use of `if not exists` to avoid overwrites.
 -- Create the users table
 create table if not exists users (
     user_id       integer primary key,
-    username      text not null unique,
+    email         text not null unique,
+    username      text not null, 
     password_hash text not null
 )
