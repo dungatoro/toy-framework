@@ -9,7 +9,7 @@ DB = Sequel.sqlite('db/local.db')
 
 # base user model inherits from Sequel::Model
 # - serialize to database
-# - creates `initialize` method automatically using database fields
+# - creates `initialize` method automatically using table fields
 class User < Sequel::Model
   def password=(password)
     self.password_hash = BCrypt::Password.create(password)
@@ -57,7 +57,6 @@ post '/signup' do
     session[:user_id] = user.id
     redirect '/'
   else
-    # "Error: #{user.errors.full_messages.join(', ')}"
     erb :signup_err
   end
 end
