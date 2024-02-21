@@ -8,4 +8,4 @@ create table if not exists users (
     email         text not null unique,
     username      text not null, 
     password_hash text not null
-)
+);
