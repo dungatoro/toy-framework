@@ -24,8 +24,12 @@ get '/signup' do
 end
 
 post '/signup' do
-  # Make sure email is unique
-  if DB[:users].where(email: params[:email]).first
+  # match passwords
+  puts( params[:password] != params[:confirm_password])
+  if params[:password] != params[:confirm_password]
+    erb :signup_err
+  # make sure email is unique
+  elsif DB[:users].where(email: params[:email]).first
     erb :signup_err
   else
     user = User.new(
