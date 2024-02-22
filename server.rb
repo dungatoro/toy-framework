@@ -25,7 +25,6 @@ end
 
 post '/signup' do
   # match passwords
-  puts( params[:password] != params[:confirm_password])
   if params[:password] != params[:confirm_password]
     erb :signup_err
   # make sure email is unique
