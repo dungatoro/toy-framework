@@ -72,8 +72,9 @@
 }
 
 a {
-  --pico-text-decoration: underline;
+  font-style: italic;
 }
+
 a.secondary, a.contrast {
   --pico-text-decoration: underline;
 }
@@ -637,12 +638,18 @@ progress,
  * Landmarks
  */
 body {
-  width: 100%;
-  margin: 0;
+  margin: 40px auto;
+  max-width: 50%;
 }
 
 main {
   display: block;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
 body > header,
